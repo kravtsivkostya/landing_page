@@ -29,10 +29,11 @@ function SubForm(e) {
 }
 
 function validate() {
-    var inputs = ["title", "name", "lastName", "position", "company", "address", "city", "country", "phone", "email", "travelArrivalDate",  "travelCountry", "foodPreferences"];
+
+    var inputs = ["title", "name", "lastName", "position", "company", "address", "city", "country", "phone", "email", "travelArrivalDate", "travelCountry", "foodPreferences"];
     var errors = ["titleError", "nameError", "lastNameError", "positionError", "companyError", "addressError", "cityError", "countryError", "phoneError", "emailError", "travelArrivalDateError", "travelCountryError", "foodPreferencesError"];
 
-   
+
     var checkboxValue = $("input[name='imgCheckbox']:checked").val();
     var status = true;
     var phoneno = /^[\+]?[\d]{3,15}$/;
@@ -45,7 +46,7 @@ function validate() {
     var days6 = document.getElementById("26September2019");
     var days5 = document.getElementById("27September2019");
 
-    
+
     for (var i = 0; i < inputs.length; i++) {
 
         if (inputs[i] != "phone" && inputs[i] != "email") {
@@ -80,36 +81,39 @@ function validate() {
         }
     }
 
-if (status == true) {
-    if(days7.value.length < 1 && days7.style.display === "block"){
-        
-        document.getElementById("travelDepartureDateError").style.display = "block";
+    if (status == true) {
+        // && days7.style.display === "block"
+        if (days7.value.length < 1 ) {
+
+            document.getElementById("travelDepartureDateError").style.display = "block";
             days7.focus();
             status = false;
-    }else {
-        document.getElementById("travelDepartureDateError").style.display = "none";
-    }
-    }
-    if (status == true) {
-        if(days6.value.length < 1 && days6.style.display === "block"){
-            
-            document.getElementById("travelDepartureDateError").style.display = "block";
-                days6.focus();
-                status = false;
-        }else {
+        } else {
             document.getElementById("travelDepartureDateError").style.display = "none";
         }
-}
-if (status == true) {
-    if(days5.value.length < 1 && days5.style.display === "block"){
-        
-        document.getElementById("travelDepartureDateError").style.display = "block";
+    }
+    if (status == true) {
+        // && days6.style.display === "block"
+        if (days6.value.length < 1 ) {
+
+            document.getElementById("travelDepartureDateError").style.display = "block";
+            days6.focus();
+            status = false;
+        } else {
+            document.getElementById("travelDepartureDateError").style.display = "none";
+        }
+    }
+    if (status == true) {
+        // && days5.style.display === "block"
+        if (days5.value.length < 1) {
+
+            document.getElementById("travelDepartureDateError").style.display = "block";
             days5.focus();
             status = false;
-    }else {
-        document.getElementById("travelDepartureDateError").style.display = "none";
+        } else {
+            document.getElementById("travelDepartureDateError").style.display = "none";
+        }
     }
-}            
 
     if (contactPersonPhone.length > 1 && status == true) {
         if (!contactPersonPhone.match(phoneno)) {
@@ -131,7 +135,7 @@ if (status == true) {
         document.getElementById("contactPersonEmailError").style.display = "none";
     }
 
-    
+
 
     if (!checkboxValue && status == true) {
         document.getElementById("imgError").style.display = "block";
@@ -143,16 +147,16 @@ if (status == true) {
     return status;
 }
 
-function displayDays(show){
-   document.getElementById('25September2019').style.display = "none";
-   document.getElementById('25September2019').name = "";
-   document.getElementById('26September2019').style.display = "none";
-   document.getElementById('26September2019').name = "";
-   document.getElementById('27September2019').style.display = "none";
-   document.getElementById('27September2019').name = "";
-   document.getElementById('daysNotSelected').style.display = "none";
-   document.getElementById(show).style.display = "block";
-   document.getElementById(show).name = "fields[travel_departure_date]";
+function displayDays(dropdownValue) {
+    document.getElementById('25September2019').style.display = "none";
+    document.getElementById('25September2019').name = "";
+    document.getElementById('26September2019').style.display = "none";
+    document.getElementById('26September2019').name = "";
+    document.getElementById('27September2019').style.display = "none";
+    document.getElementById('27September2019').name = "";
+    document.getElementById('daysNotSelected').style.display = "none";
+    document.getElementById(dropdownValue).style.display = "block";
+    document.getElementById(dropdownValue).name = "fields[travel_departure_date]";
 
 }
 
