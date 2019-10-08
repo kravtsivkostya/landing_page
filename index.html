@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SCTH - Event RSVP</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        var checkboxes = document.getElementsByName("imgCheckbox");
+
+        $(document).on('click', 'input[type="checkbox"]', function () {
+            $('input[type="checkbox"]').not(this).prop('checked', false);
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+        function SubForm(e) {
+            e.preventDefault();
+            var subStatus = false;
+            subStatus = validate();
+            if (subStatus) {
+                $.ajax({
+                    url: 'https://app.mailerlite.com/webforms/submit/w6t3f7',
+                    type: 'post',
+                    data: $('#mailerliteForm').serialize(),
+                    success: function () {
+                        window.location.assign("thanks.html")
+                    }
+                })
+
+            }
+        }
+
+        function validate() {
+            var inputs = ["title", "name", "lastName", "position", "company", "address", "city", "country", "phone", "email", "travelArrivalDate",  "travelCountry", "foodPreferences"];
+            var errors = ["titleError", "nameError", "lastNameError", "positionError", "companyError", "addressError", "cityError", "countryError", "phoneError", "emailError", "travelArrivalDateError", "travelCountryError", "foodPreferencesError"];
+
+           
+            var checkboxValue = $("input[name='imgCheckbox']:checked").val();
+            var status = true;
+            var phoneno = /^[\+]?[\d]{3,15}$/;
+            var email = document.getElementById("email").value;
+
+            var contactPersonEmail = document.getElementById("contactPersonEmail").value;
+            var contactPersonPhone = document.getElementById("contactPersonPhone").value;
+
+            var days7 = document.getElementById("25September2019");
+            var days6 = document.getElementById("26September2019");
+            var days5 = document.getElementById("27September2019");
+
+            
+            for (var i = 0; i < inputs.length; i++) {
+
+                if (inputs[i] != "phone" && inputs[i] != "email") {
+                    if (document.getElementById(inputs[i]).value.length < 1 && status == true) {
+                        document.getElementById(errors[i]).style.display = "block";
+                        document.getElementById(inputs[i]).focus();
+                        status = false;
+                    } else {
+                        document.getElementById(errors[i]).style.display = "none";
+                    }
+                }
+
+                if (inputs[i] === "phone") {
+
+                    if (!document.getElementById("phone").value.match(phoneno) && status == true) {
+                        document.getElementById("phoneError").style.display = "block";
+                        document.getElementById("phone").focus();
+                        status = false;
+                    } else {
+                        document.getElementById("phoneError").style.display = "none";
+                    }
+                }
+
+                if (inputs[i] === "email") {
+                    if (!validateEmail(email) && status == true) {
+                        document.getElementById("emailError").style.display = "block";
+                        document.getElementById("email").focus();
+                        status = false;
+                    } else {
+                        document.getElementById("emailError").style.display = "none";
+                    }
+                }
+            }
+
+if (status == true) {
+            if(days7.value.length < 1 && days7.style.display === "block"){
+                
+                document.getElementById("travelDepartureDateError").style.display = "block";
+                    days7.focus();
+                    status = false;
+            }else {
+                document.getElementById("travelDepartureDateError").style.display = "none";
+            }
+            }
+            if (status == true) {
+                if(days6.value.length < 1 && days6.style.display === "block"){
+                    
+                    document.getElementById("travelDepartureDateError").style.display = "block";
+                        days6.focus();
+                        status = false;
+                }else {
+                    document.getElementById("travelDepartureDateError").style.display = "none";
+                }
+    }
+    if (status == true) {
+            if(days5.value.length < 1 && days5.style.display === "block"){
+                
+                document.getElementById("travelDepartureDateError").style.display = "block";
+                    days5.focus();
+                    status = false;
+            }else {
+                document.getElementById("travelDepartureDateError").style.display = "none";
+            }
+        }            
+
+            if (contactPersonPhone.length > 1 && status == true) {
+                if (!contactPersonPhone.match(phoneno)) {
+                    document.getElementById("contactPersonPhoneError").style.display = "block";
+                    document.getElementById("contactPersonPhone").focus();
+                    status = false;
+                }
+            } else {
+                document.getElementById("contactPersonPhoneError").style.display = "none";
+            }
+
+            if (contactPersonEmail.length > 1 && status == true) {
+                if (!validateEmail(contactPersonEmail)) {
+                    document.getElementById("contactPersonEmailError").style.display = "block";
+                    document.getElementById("contactPersonEmail").focus();
+                    status = false;
+                }
+            } else {
+                document.getElementById("contactPersonEmailError").style.display = "none";
+            }
+
+            
+
+            if (!checkboxValue && status == true) {
+                document.getElementById("imgError").style.display = "block";
+                status = false;
+            } else document.getElementById("imgError").style.display = "none";
+
+            $("#interestCheck").val(concatCheckboxes());
+
+            return status;
+        }
+
+        function displayDays(show){
+           document.getElementById('25September2019').style.display = "none";
+           document.getElementById('25September2019').name = "";
+           document.getElementById('26September2019').style.display = "none";
+           document.getElementById('26September2019').name = "";
+           document.getElementById('27September2019').style.display = "none";
+           document.getElementById('27September2019').name = "";
+           document.getElementById('daysNotSelected').style.display = "none";
+           document.getElementById(show).style.display = "block";
+           document.getElementById(show).name = "fields[travel_departure_date]";
+
+        }
+
+        function concatCheckboxes() {
+            var checkboxConcat = '';
+            for (i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checkboxConcat += ',' + checkboxes[i].value;
+                }
+            }
+            checkboxConcat = checkboxConcat.slice(1);
+            return checkboxConcat;
+        }
+
+    </script>
+</head>
+
+<body>
+    <style>
+        @font-face {
+            font-family: "Futura";
+            src: url("fonts/Futura.ttc");
+        }
+
+        @media only screen and (max-width: 330px) {
+            form.form-size {
+
+                width: 18em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            div.columnError {
+                display: flex;
+                flex-direction: column !important;
+                flex-basis: 100%;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+
+            li.row {
+                margin-top: 2%;
+            }
+
+            div.column-image {
+                flex-basis: 50% !important;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+
+            label.label-img img {
+            width: 5.5em;
+            transition-duration: 0.2s;
+            transform-origin: 50% 50%;
+            }
+            img.logo{
+            width: 9em; 
+            margin-top: 0.7em
+        }
+        div.columnFooter{
+            justify-content: center;
+        }
+        img.imgLine{
+                width: 17em;
+    height: 2em;
+        }
+        div.top{
+            margin-bottom: 0em;
+        }
+        }
+
+        @media only screen and (max-width: 400px) and (min-width: 331px){
+            form.form-size {
+
+                width: 20em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            div.columnError {
+                display: flex;
+                flex-direction: column !important;
+                flex-basis: 100%;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+
+            li.row {
+                margin-top: 2%;
+            }
+
+            div.column-image {
+                flex-basis: 50% !important;
+            }
+
+
+            html {
+                overflow-x: hidden;
+            }
+
+            label.label-img img {
+            width: 5.5em;
+            transition-duration: 0.2s;
+            transform-origin: 50% 50%;
+        }
+        img.logo{
+            width: 9em; 
+            margin-top: 0.7em
+        }
+        div.columnFooter{
+            justify-content: center;
+        }
+        img.imgLine{
+                width: 17em;
+    height: 2em;
+        }
+        div.top{
+            margin-bottom: 0em;
+        }
+        }
+
+        @media only screen and (max-width: 600px) and (min-width: 401px) {
+            form.form-size {
+
+                width: 23em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            div.columnError {
+                display: flex;
+                flex-direction: column !important;
+                flex-basis: 100%;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+
+            li.row {
+                margin-top: 2%;
+            }
+
+            div.column-image {
+                flex-basis: 50% !important;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+            label.label-img img {
+            width: 7em;
+            transition-duration: 0.2s;
+            transform-origin: 50% 50%;
+        }
+        img.logo{
+            width: 9em; 
+            margin-top: 0.7em
+        }
+        div.columnFooter{
+            justify-content: center;
+        }
+        img.imgLine{
+                width: 17em;
+    height: 2em;
+        }
+        div.top{
+            margin-bottom: 0em;
+        }
+
+        }
+
+        .titleStyle {
+            font-size: x-large;
+            margin-left: 3%;
+            font-family: "Futura";
+            color: rgb(111, 111, 110);
+            font-weight: bold;
+            line-height: 2.213;
+            text-align: left;
+            -moz-transform: matrix(0.98627873950028, 0, 0, 0.98608797205282, 0, 0);
+            -webkit-transform: matrix(0.98627873950028, 0, 0, 0.98608797205282, 0, 0);
+            -ms-transform: matrix(0.98627873950028, 0, 0, 0.98608797205282, 0, 0);
+        }
+
+
+        .textStyle {
+                font-size: 2vw;
+            font-family: "Futura";
+            color: rgb(217, 217, 217);
+            line-height: 1.355;
+            text-align: center;
+            -moz-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+            -webkit-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+            -ms-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+        }
+
+        body {
+            font-family: Futura;
+            background-image: url(img/thankYouBackground.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0px;
+            /*min-height: 100%;
+            width: 100%;*/
+
+            /*position: absolute;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            background-color: rgba(255, 255, 255, 0.8);
+            list-style-type: none;
+            padding: 2%;
+            border-radius: px;
+            padding-top: 5%;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 100%;
+            flex: 1;
+        }
+
+        .span-error {
+            color: red;
+            font-size: 8pt;
+        }
+
+        .select-width {
+            width: 200px;
+        }
+
+        div.options>label>input {
+            visibility: hidden;
+        }
+
+        div.options>label.visa {
+            display: block;
+            margin: 0 0 0 -10px;
+            padding: 0 0 0 0;
+            height: 20px;
+        }
+
+        div.options>label {
+            display: block;
+            margin: 0 0 0 -10px;
+            padding: 0 0 0 0;
+            height: 20px;
+        }
+
+        div.options>label>img {
+            display: inline-block;
+            padding: -6px;
+            margin: -2px;
+            height: 18px;
+            width: 18px;
+            background: none;
+        }
+
+        div.options>label>input:checked+img {
+            background: url(https://cdn0.iconfinder.com/data/icons/slim-square-icons-basics/100/basics-21-512.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 30px 30px;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        .ul-img {
+            list-style-type: none;
+        }
+
+        .li-img {
+            display: inline-block;
+        }
+
+        input[type="checkbox"][id^="cb"] {
+            display: none;
+        }
+
+        .label-img {
+            padding: 10px;
+            display: block;
+            position: relative;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .label-img:before {
+            background-color: white;
+            color: white;
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            line-height: 28px;
+            transition-duration: 0.4s;
+            transform: scale(0);
+        }
+
+        .label-img img {
+            width: 120px;
+            transition-duration: 0.2s;
+            transform-origin: 50% 50%;
+        }
+
+        :checked+.label-img:before {
+            content: "✓";
+            background-color: grey;
+            transform: scale(1);
+        }
+
+        :checked+.label-img img {
+            transform: scale(0.9);
+            box-shadow: 0 0 5px #333;
+            z-index: -1;
+        }
+
+        .lableSquareCheckbox {
+            display: inline-block;
+
+        }
+
+        select {
+            -webkit-writing-mode: horizontal-tb !important;
+            text-rendering: auto;
+            color: black;
+            letter-spacing: normal;
+            word-spacing: normal;
+            text-transform: none;
+            text-indent: 0px;
+            text-shadow: none;
+            display: inline-block;
+            text-align: start;
+            -webkit-appearance: menulist;
+            box-sizing: border-box;
+            align-items: center;
+            white-space: pre;
+            -webkit-rtl-ordering: logical;
+            background-color: white;
+            cursor: default;
+            margin: 0em;
+            font: 400 13.3333px Arial;
+            border-radius: 0px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(169, 169, 169);
+            border-image: initial;
+            background: url('img/test3.png') repeat;
+        }
+
+        select option {
+            margin: 40px;
+            background: rgb(201, 201, 201);
+            opacity: 0.6;
+            /*color: #fff;*/
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        input {
+            background: url('img/test3.png') repeat;
+            border-color: rgb(255, 255, 255) rgb(166, 159, 159) rgb(166, 159, 159) rgb(255, 255, 255);
+            border-width: 1px;
+            border-radius: 0;
+
+        }
+
+        .span-error {
+            color: red;
+            font-size: 8pt;
+        }
+
+        .input-hidden {
+            display: none;
+            visibility: hidden;
+        }
+
+        .radio-div {
+            outline: none;
+        }
+
+        .divSpan {
+            display: none;
+        }
+
+        li.row {
+            margin: 1%;
+        }
+
+        li.row>div.column {
+            margin-left: 3%;
+            margin-right: 3%;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .one {
+            flex-basis: 100%;
+            order: 1;
+        }
+
+        .two {
+            flex: 1 1 0;
+            order: 2;
+        }
+
+        .columnF4 {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 100%;
+            flex: 3.3;
+        }
+
+        .field-label {
+            font-size: small;
+        }
+
+        .form-size {
+            width: 51em;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 9px 54px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+
+            background-color: #616060;
+            width: 12em;
+    margin-left: auto;
+    margin-right: auto;
+        }
+
+        .logo{
+            width: 12em; 
+            margin-top: 1.7em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .columnFooter{
+            justify-content: center;
+        }
+        .top{
+            margin-bottom: 3em;
+        }
+    </style>
+
+    <form class="form-size" action="thanks.html" ; data-code="w6t3f7" method="post" target="_blank" id="mailerliteForm"
+        name="mailerliteForm" onsubmit="SubForm(event)">
+
+        <div class="flex-container top">
+            <div class="flex-item one">
+                <p class="textStyle">
+                    We look forward to welcoming you to our Kingdom. <br>
+                    please enter your details below for exclusive access to <br>
+                    hidden treasures that will leave you in awe.
+                </p>
+            </div>
+            <div class="flex-item two"> <img src="img/line.svg" class="imgLine" alt=""></div>
+
+        </div>
+        <ul class="wrapper">
+
+
+
+            <h1 class="titleStyle"> PERSONAL</h1>
+            <li class="row">
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <div class="row">
+                                <div class="column">
+                                    <label class="field-label">Title</label>
+                                </div>
+                                <div class="column">
+                                    <select name="fields[title]" id="title">
+                                        <option value="" disabled selected hidden></option>
+                                        <option value="Mr">Mr</option>
+                                        <option value="Mrs">Mrs</option>
+                                        <option value="Miss">Miss</option>
+                                        <option value="Dr">Dr</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="row">
+                    </div>
+                </div>
+                <div id="titleError" class="row divSpan">
+                    <span class="span-error" style="margin-left: 3%">This field is required, please make sure your input
+                        is
+                        correct.</span>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Given Name</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[name]" value="" id="name">
+                        </div>
+                    </div>
+                    <div id="nameError" class="row divSpan ">
+                        <span class="span-error"> This
+                            field is required, please make sure your input is correct.</span>
+                    </div>
+                </div>
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Surname</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[last_name]" value="" id="lastName">
+                        </div>
+                    </div>
+                    <div id="lastNameError" class="row divSpan ">
+                        <span class="span-error">This field is required, please make sure your input
+                            is correct.</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <div class="row">
+                                <div class="column">
+                                    <label for="name" class="field-label">Position</label>
+                                </div>
+                                <div class="column">
+                                    <input type="text" data-inputmask="" name="fields[position]" value="" id="position">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="row">
+                    </div>
+                </div>
+                <div id="positionError" class="row divSpan">
+                    <span class="span-error" style="margin-left: 3%;">This field is required, please make sure your
+                        input is
+                        correct.</span>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Organization/Company</label>
+                        </div>
+                        <div class="columnF4">
+                            <input type="text" data-inputmask="" name="fields[company]" value="" id="company">
+                        </div>
+                    </div>
+                    <div id="companyError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input
+                            is correct.</span>
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Address</label>
+                        </div>
+                        <div class="columnF4">
+                            <input type="text" data-inputmask="" name="fields[address]" value="" id="address">
+                        </div>
+                    </div>
+                    <div id="addressError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input
+                            is correct.</span>
+                    </div>
+                </div>
+
+            </li>
+
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">City</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[city]" value="" id="city">
+                        </div>
+                    </div>
+                    <div id="cityError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input is
+                            correct.</span>
+                    </div>
+                </div>
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Country</label>
+                        </div>
+                        <div class="column">
+                            <select name="fields[country]" id="country">
+                                <option value="" disabled selected hidden></option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Canada">Canada</option>
+                                <option value="China">China</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Hong Kong">Hong Kong</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Macau">Macau</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="South Korea">South Korea</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="UAE">UAE</option>
+                                <option value="UK">UK</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="USA">USA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="countryError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input
+                            is correct.</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Mobile phone</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[phone]" value="" id="phone"
+                                placeholder="">
+                        </div>
+                    </div>
+                    <div id="phoneError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input is
+                            correct.</span>
+                    </div>
+                </div>
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Email</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[email]" value="" id="email">
+                        </div>
+                    </div>
+                    <div id="emailError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your input is
+                            correct.</span>
+                    </div>
+                </div>
+            </li>
+            <hr style="margin: 3%">
+            <h1 class="titleStyle">CONTACT PERSON</h1>
+            <li class="row">
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Given Name</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[assistant_name]" value="">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Surname</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" data-inputmask="" name="fields[assistant_last_name]" value="">
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Mobile phone</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" id="contactPersonPhone" data-inputmask="" name="fields[assistant_phone]"
+                                value="">
+                        </div>
+                    </div>
+                    <div id="contactPersonPhoneError" class="row divSpan">
+                        <span class="span-error">Please make sure your input is correct.</span>
+                    </div>
+                </div>
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Email</label>
+                        </div>
+                        <div class="column">
+                            <input type="text" id="contactPersonEmail" data-inputmask="" name="fields[assistant_email]"
+                                value="">
+                        </div>
+                    </div>
+                    <div id="contactPersonEmailError" class="row divSpan">
+                        <span class="span-error">Please make sure your input is correct.</span>
+                    </div>
+                </div>
+            </li>
+            <hr style="margin: 3%">
+            <h1 class="titleStyle">TRAVEL ROUTE</h1>
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Arrival:</label>
+                        </div>
+                        <div class="column">
+                            <select name="fields[travel_arrival_date]" id="travelArrivalDate" onchange="displayDays(document.getElementById('travelArrivalDate').value.split(' ').join(''));">
+                                <option value="" disabled selected hidden></option>
+                                <option value="25 September 2019" id="september25">25 September 2019</option>
+                                <option value="26 September 2019" id="september26">26 September 2019</option>
+                                <option value="27 September 2019" id="september27">27 September 2019</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="travelArrivalDateError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure
+                            your input is correct.</span>
+                    </div>
+                </div>
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <label class="field-label">Days:</label>
+                        </div>
+                        <div class="column">
+                            <select name="" id="daysNotSelected">
+                                <option value="" disabled selected hidden></option>
+                            </select>
+
+                            <select name="" id="25September2019" class="divSpan">
+                                <option value="" disabled selected hidden></option>
+                                <option value="1 day">1 day</option>
+                                <option value="2 days">2 days</option>
+                                <option value="3 days">3 days</option>
+                                <option value="4 days">4 days</option>
+                                <option value="5 days">5 days</option>
+                                <option value="6 days">6 days</option>
+                                <option value="7 days">7 days</option>
+                            </select>
+
+                            <select name="" id="26September2019" class="divSpan">
+                                <option value="" disabled selected hidden></option>
+                                <option value="1 day">1 day</option>
+                                <option value="2 days">2 days</option>
+                                <option value="3 days">3 days</option>
+                                <option value="4 days">4 days</option>
+                                <option value="5 days">5 days</option>
+                                <option value="6 days">6 days</option>
+                            </select>
+
+                            <select name="" id="27September2019" class="divSpan">
+                                <option value="" disabled selected hidden></option>
+                                <option value="1 day">1 day</option>
+                                <option value="2 days">2 days</option>
+                                <option value="3 days">3 days</option>
+                                <option value="4 days">4 days</option>
+                                <option value="5 days">5 days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="travelDepartureDateError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure
+                            your input is correct.</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="row">
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <div class="row">
+                                <div class="column">
+                                    <label class="field-label">Country</label>
+                                </div>
+                                <div class="column">
+                                    <select name="fields[travel_country]" id="travelCountry">
+                                        <option value="" disabled selected hidden></option>
+                                        <option value="Andorra">Andorra</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Austria">Austria</option>
+                                        <option value="Bahrain">Bahrain</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Brunei">Brunei</option>
+                                        <option value="Bulgaria">Bulgaria</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="China">China</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Cyprus">Cyprus</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France">France</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Hong Kong">Hong Kong</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Iceland">Iceland</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Jordan">Jordan</option>
+                                        <option value="Kazakhstan">Kazakhstan</option>
+                                        <option value="Kuwait">Kuwait</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Macau">Macau</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Malta">Malta</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="New Zealand">New Zealand</option>
+                                        <option value="Norway">Norway</option>
+                                        <option value="Oman">Oman</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Romania">Romania</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="San Marino">San Marino</option>
+                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="South Korea">South Korea</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="UAE">UAE</option>
+                                        <option value="UK">UK</option>
+                                        <option value="Ukraine">Ukraine</option>
+                                        <option value="USA">USA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="row">
+                    </div>
+                </div>
+                <div id="travelCountryError" class="row divSpan">
+                    <span class="span-error" style="margin-left: 3%">This field is required, please make sure your input
+                        is correct.</span>
+                </div>
+
+            </li>
+
+            <hr style="margin: 3%">
+            <h1 class="titleStyle">FOOD PREFERENCES</h1>
+            <li class="row">
+                <div class="column columnError">
+                    <div class="row">
+                        <div class="column">
+                            <select name="fields[food_preferences]" id="foodPreferences">
+                                <option value="" disabled selected hidden></option>
+                                <option value="None">None</option>
+                                <option value="Healthy">Healthy</option>
+                                <option value="Organic">Organic</option>
+                                <option value="Vegan or Vegetarian">Vegan or Vegetarian</option>
+                                <option value="Peanut Allergies">Peanut Allergies</option>
+                                <option value="Diabetic">Diabetic</option>
+                                <option value="Lactose Intolerance">Lactose Intolerance</option>
+                            </select>
+                        </div>
+                        <div class="column">
+
+                        </div>
+                    </div>
+                    <div id="foodPreferencesError" class="row divSpan">
+                        <span class="span-error">This field is required, please make sure your
+                            input is correct.</span>
+                    </div>
+                </div>
+            </li>
+
+
+            <hr style="margin: 3%">
+            <h1 class="titleStyle">EXPLORE SAUDI</h1>
+            <p style="margin-left:3.5%; margin-bottom: 5%" class="field-label">Let us know your interest so we can
+                assist in designing your experience in the kingdom
+            </p>
+            <li class="row">
+                <div class="row">
+                    <input type="text" id="interestCheck" data-inputmask="" name="fields[explore_interest]" value=""
+                        class="input-hidden">
+                     <ul class="row ul-img">
+                        <input type="text" id="interestCheck" data-inputmask="" name="checkbox" value=""
+                            class="input-hidden">
+                        <div class="column column-image">
+                            <li class="li-img"><input type="checkbox" id="cb1" name="imgCheckbox" value="Heritage">
+                                <label class="label-img" for="cb1"><img src="img\heritage.png" /></label> </li>
+                        </div>
+                        <div class="column column-image">
+                            <li class="li-img"><input type="checkbox" id="cb2" name="imgCheckbox" value="Culture">
+                                <label class="label-img" for="cb2"><img src="img\culture.png" /></label>
+                            </li>
+                        </div>
+                        <div class="column column-image">
+                            <li class="li-img"><input type="checkbox" id="cb3" name="imgCheckbox" value="Nature">
+                                <label class="label-img" for="cb3"><img src="img\nature.png" /></label>
+                            </li>
+                        </div>
+                        <div class="column column-image">
+                            <li class="li-img"><input type="checkbox" id="cb4" name="imgCheckbox" value="Adventure">
+                                <label class="label-img" for="cb4"><img src="img\adventure.png" /></label>
+                            </li>
+
+                        </div>
+                    </ul>
+                    <div id="imgError" class="row divSpan">
+                        <span class="span-error" style="margin-left: 3%">This field is required, please make sure your
+                            input is correct.</span>
+                    </div>
+                </div>
+
+            </li>
+            <li class="row">
+                <div class="column columnFooter">
+                    <input type="hidden" name="ml-submit" value="1">
+                    <button type="submit" class="btn">
+                        <span>Submit</span>
+                    </button>
+                     
+                </div>
+
+            </li>
+
+             <li class="row">
+                <div class="column columnFooter">
+                    <img src="img/logoForm.svg" alt="" class="logo">
+                </div>
+
+            </li>
+
+            
+
+        </ul>
+    </form>
+
+</body>
+
+</html>

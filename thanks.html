@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SCTH - Event RSVP</title>
+
+</head>
+
+<body>
+    <style>
+        @font-face {
+            font-family: "Futura";
+            src: url("fonts/Futura.ttc");
+        }
+
+        @media only screen and (max-width: 330px) {
+            p.textStyle {
+            font-size: 3vw;
+            }
+            ul.wrapper{
+                padding-top: 5%;
+            }
+            form.form-size {
+
+                width: 18em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            li.row {
+                margin-top: 2%;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+
+            div.columnFooter {
+                justify-content: center;
+            }
+        }
+
+        @media only screen and (max-width: 400px) and (min-width: 331px) {
+            p.textStyle {
+            font-size: 3vw;
+            }
+            ul.wrapper{
+                padding-top: 5%;
+            }
+            form.form-size {
+
+                width: 20em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            
+            li.row {
+                margin-top: 2%;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+
+            
+            div.columnFooter {
+                justify-content: center;
+            }
+
+        }
+
+        @media only screen and (max-width: 600px) and (min-width: 401px) {
+            p.textStyle {
+            font-size: 3vw;
+            }
+
+            ul.wrapper{
+                padding-top: 5%;
+            }
+            form.form-size {
+
+                width: 23em;
+            }
+
+            div.column {
+                display: flex;
+                flex-direction: row;
+                flex-basis: 100%;
+            }
+
+            li.row {
+                margin-top: 2%;
+            }
+
+            html {
+                overflow-x: hidden;
+            }
+
+            div.columnFooter {
+                justify-content: center;
+            }
+
+        }
+
+        
+        .textStyle {
+            font-size: 2vw;
+            font-family: "Futura";
+            color: rgb(217, 217, 217);
+            line-height: 1.355;
+            text-align: center;
+            -moz-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+            -webkit-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+            -ms-transform: matrix(1.07527249198017, 0, 0, 1.07527249198017, 0, 0);
+        }
+        html{
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Futura;
+            background-image: url(img/thankYouBackground.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0px;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            list-style-type: none;
+            padding: 2%;
+            border-radius: px;
+            
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 100%;
+            flex: 1;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li.row {
+            margin: 1%;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .columnFooter {
+            justify-content: center;
+        }
+
+    </style>
+
+
+        <ul class="wrapper">
+
+            <li class="row">
+                <div class="column columnFooter">
+                    <p class="textStyle">
+                        Thank you for sharing your details,<br>
+                        our team will be in touch shortly to secure your visa and
+                        curate <br> your experience in the kingdom
+                    </p>
+
+                </div>
+
+            </li>
+
+            <li class="row">
+                <div class="column columnFooter">
+                    <img src="img/line.svg" alt="">
+
+                </div>
+
+            </li>
+
+            <li class="row">
+                <div class="column columnFooter">
+                    <img src="img/Logo.svg"
+                        alt="" >
+                </div>
+
+            </li>
+
+        </ul>
+    <!-- </form> -->
+
+</body>
+
+</html>
